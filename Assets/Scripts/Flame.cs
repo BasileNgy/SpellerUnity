@@ -5,19 +5,20 @@ using UnityEngine;
 public class Flame : BoardElement
 {
     private int rebond;
-    public int nbrMaxRebond = 2;
+    private int nbrMaxRebond = 2;
 
     private void Start()
     {
         offSetx = 0.5f;
         offSety = 0.5f;
         rebond = 0;
-        deplacement = 2;
+        movesMax = 2;
+        nameSpell = ItemName.FIREBALL;
     }
 
     private void Update()
     {
-        //test si la position est atteinte et déplace le sprite
+        //test si la position est atteinte et deplace le sprite
         if (transform.position != objectivePosition)
         {
             transform.position = Vector3.MoveTowards(transform.position, objectivePosition, 4 * Time.deltaTime);
@@ -25,13 +26,25 @@ public class Flame : BoardElement
         }
         else
         {
-            position = objectivePosition;
-            reached = true;
+            if(isMoving)
+            { 
+                movesDone++;
+                if (movesDone == movesMax)
+                {
+                    reached = true;
+                    isMoving = false;
+                }
+                else
+                {
+                    objectivePosition = objectivesPositionsList[movesDone];
+                }
+                //position = objectivePosition;
+            }
         }
     }
 
     /*
-     * Si la flamme a atteint le bord du terrain, elle retourne true
+     * Si la flamme a atteint le bord du terrain, elle retourne true et incrÃ©mente la valeur du rebond
      */
     public override bool JobDone()
     {

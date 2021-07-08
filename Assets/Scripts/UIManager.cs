@@ -62,7 +62,7 @@ public class UIManager : MonoBehaviour
         EnableDirectionsAttack();
         spellDirections.transform.rotation = Quaternion.Euler(Vector3.forward * 0);
         spellDirections.gameObject.SetActive(false);
-        Debug.Log("Camouflage" + spellDirections.transform.rotation);
+        //Debug.Log("Camouflage" + spellDirections.transform.rotation);
     }
 
     /*réactive toutes les flèches de directions avant le tour du prochain joueur
@@ -86,7 +86,7 @@ public class UIManager : MonoBehaviour
         spellDirections.transform.Rotate(Vector3.forward * 45);
         DisableDiagonalDirections(p);
         spellDirections.gameObject.SetActive(true);
-        Debug.Log("Rotation"+spellDirections.transform.rotation);
+        //Debug.Log("Rotation"+spellDirections.transform.rotation);
     }
 
     public void EnableSpellButtons()

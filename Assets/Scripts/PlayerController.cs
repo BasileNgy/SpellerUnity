@@ -10,7 +10,8 @@ public class PlayerController : BoardElement
     public int health;
 
     public int moveCounter;
-    public int maxMove = 2;
+    //nombre de déplacement total autorisé pour le joueur
+    public int maxDeplacement = 2;
 
     public string playerName;
 
@@ -22,8 +23,10 @@ public class PlayerController : BoardElement
         animator = GetComponent<Animator>();
         position = transform.position;
         objectivePosition = transform.position;
+        nameSpell = ItemName.PLAYER;
 
         moveCounter = 0;
+        movesMax = 1;
 
         health = 3;
 
@@ -41,7 +44,7 @@ public class PlayerController : BoardElement
         }
         else
         {
-            position = objectivePosition;
+            isMoving = false;
             reached = true;
         }
 

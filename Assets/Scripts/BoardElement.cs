@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Spell
+public enum ItemName
 {
-    ARROW, FIREBALL, STONEWALL
+    ARROW, FIREBALL, STONEWALL, PLAYER
 }
 
 public enum Direction
@@ -16,15 +17,23 @@ public class BoardElement : MonoBehaviour
 {
     //real position transform
     public Vector3 position;
-    //position on the chessboard
+    //position on the chessboard (nombre entier naturels positifs)
     public Vector3 boardPosition;
     //goal position to move to
     public Vector3 objectivePosition;
-    //position reached
+    //list of postions to moveTo
+    public List<Vector3> objectivesPositionsList; 
+    //flag position reached
     public bool reached;
     public Board board;
 
-    public int deplacement;
+    //Nombre maximal de déplacement autorisés en une seule itération
+    protected int movesMax;
+    //Nombre de déplacement effectués
+    protected int movesDone;
+    protected bool isMoving;
+
+    public ItemName nameSpell;
 
     //Orientation du sprite et son équivalence en Vecteur
     public Direction orientation;
@@ -36,23 +45,34 @@ public class BoardElement : MonoBehaviour
 
     public GameManager gameManager;
 
-    void Update()
+    private void Start()
     {
-        
+        objectivesPositionsList = new List<Vector3>();
+        objectivePosition = transform.position;
+        isMoving = false;
     }
 
     /*
      * Récupération de la position à atteindre
      */
-    public Vector3 MoveCharacter(Direction dir)
+    public void MoveItem(Direction dir)
     {
         orientation = dir;
-        Vector3 objectif = GetObjectivePosition();
-        objectivePosition = objectif + new Vector3(offSetx, offSety, 0);
-
-        return objectif;
+        objectivesPositionsList.Clear();
+        for (int i = 0; i < movesMax; i++)
+        {
+            Vector3 objectif = GetObjectivePosition();
+            Vector3 oneOfTheObjectivePosition = objectif + new Vector3(offSetx, offSety, 0);
+            objectivesPositionsList.Add(oneOfTheObjectivePosition);
+            objectivePosition = objectivesPositionsList[0];
+        }
+        isMoving = true;
+        movesDone = 0;
     }
 
+    /*
+     * Calcul de la positon objectif de l'item
+     */
     private Vector3 GetObjectivePosition()
     {
         int x = (int) boardPosition.x;
@@ -210,66 +230,7 @@ public class BoardElement : MonoBehaviour
 
         return GameManager.cellsBoard[x, y].cornerLowLeft;
     }
-
-    /*
-     * Calcule le vecteur de direction 
-     
-    public Vector3 GetVectorMove()
-    {
-        Vector3 objectif = boardPosition;
-        orientationAxes = Vector2Int.zero;
-
-        switch (orientation)
-        {
-            case Direction.UP:
-                if (position.y < 9)
-                {
-                    objectif = new Vector3(boardPosition.x, boardPosition.y + 1, 0);
-                    orientationAxes.y = 1;
-                }
-                else
-                    Debug.Log("Bord du terrain");
-                break;
-
-            case Direction.RIGHT:
-                if (position.x < 9)
-                {
-                    objectif = new Vector3(boardPosition.x + 1, boardPosition.y, 0);
-                    orientationAxes.x = 1;
-                }
-                else
-                    Debug.Log("Bord du terrain");
-                break;
-
-            case Direction.DOWN:
-                if (position.y > 1)
-                {
-                    objectif = new Vector3(boardPosition.x, boardPosition.y - 1, 0);
-                    orientationAxes.y = -1;
-                }
-                else
-                    Debug.Log("Bord du terrain");
-                break;
-
-            case Direction.LEFT:
-                if (position.x > 1)
-                {
-                    objectif = new Vector3(boardPosition.x - 1, boardPosition.y, 0);
-                    orientationAxes.x = -1;
-                }
-                else
-                    Debug.Log("Bord du terrain");
-                break;
-
-            default:
-                objectif = boardPosition;
-                Debug.LogError("Erreur Direction déplacement");
-                break;
-        }
-        boardPosition = objectif;
-        return objectif;
-    }*/
-
+    
     /*
      * Set le joueur à une case précise
      */

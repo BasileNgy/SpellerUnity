@@ -9,7 +9,8 @@ public class Arrow : BoardElement
     {
         offSetx = 0.5f;
         offSety = 0.5f;
-        deplacement = 1;
+        movesMax = 1;
+        nameSpell = ItemName.ARROW;
     }
 
     private void Update()
@@ -22,7 +23,7 @@ public class Arrow : BoardElement
         }
         else
         {
-            position = objectivePosition;
+            isMoving = false;
             reached = true;
         }
     }

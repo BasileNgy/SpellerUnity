@@ -24,6 +24,7 @@ ScriptsOnlyBuild:
     - UnityEditor.Tilemaps.TileDragAndDropManager
     - UnityEditor.Tilemaps.TilemapPrefabStageHelper
     Unity.Rider.Editor.dll:
+    - Packages.Rider.Editor.RiderScriptEditorData
     - Packages.Rider.Editor.UnitTesting.CallbackData
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
@@ -207,7 +208,7 @@ ScriptsOnlyBuild:
     className: UIManager
   - hash:
       serializedVersion: 2
-      Hash: 2fae8a86421d9ef565b29c291a13e287
+      Hash: 0a0a163bbf463859f9fd63adba1ed195
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Arrow
@@ -447,7 +448,7 @@ ScriptsOnlyBuild:
     className: EventSystem
   - hash:
       serializedVersion: 2
-      Hash: a3a49fcd9be1ba5827528277fefe2894
+      Hash: 151fe3ff6eb2d1b2564349b912d2bed9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerController
@@ -531,7 +532,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: 2fae8a86421d9ef565b29c291a13e287
+      Hash: 0a0a163bbf463859f9fd63adba1ed195
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BoardElement
@@ -615,7 +616,7 @@ ScriptsOnlyBuild:
     className: TouchInputModule
   - hash:
       serializedVersion: 2
-      Hash: f7b1e5ec6305b4e14cbc2fc1ed320175
+      Hash: 0a0a163bbf463859f9fd63adba1ed195
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Flame
@@ -628,4 +629,4 @@ ScriptsOnlyBuild:
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: C:/Users/Basile/Desktop/UQAC/Projet perso/Chessplate_Build/ChessPlate.exe
+  playerPath: C:/Users/Basile/Desktop/UQAC/Projet perso/Speller_Build/ChessPlate.exe

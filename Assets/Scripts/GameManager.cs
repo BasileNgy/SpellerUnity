@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = System.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class GameManager : MonoBehaviour
     private PlayerController playerInTurn;
     private List<BoardElement> listItem;
 
-    public Spell spellSelected;
+    public ItemName spellSelected;
     /*Spell ideas :
      * 3 boules de feu en diagonale
      * 3 bloc de terre sur une ligne autour du personnage
@@ -38,7 +39,7 @@ public class GameManager : MonoBehaviour
         player2 = playerObject2.GetComponent<PlayerController>();
         listItem = new List<BoardElement>();
 
-        playerInTurn = player1;
+        FirstPlayerGenerator();
         SetupPlayers();
 
         uiManager.DisableAllControllers();
@@ -49,8 +50,8 @@ public class GameManager : MonoBehaviour
 
     private void SetupPlayers()
     {
-        player1.SetPositionCharacter(new Vector3(1, 1, 0));
-        player2.SetPositionCharacter(new Vector3(8, 8, 0));
+        player1.SetPositionCharacter(new Vector3(1.5f, 1.8f, 0));
+        player2.SetPositionCharacter(new Vector3(8.5f, 8.8f, 0));
 
         player1.tagg = 1;
         player2.tagg = 2;
@@ -60,6 +61,20 @@ public class GameManager : MonoBehaviour
 
         uiManager.SetLifeBars(player1);
         uiManager.SetLifeBars(player2);
+    }
+
+    private void FirstPlayerGenerator()
+    {
+        Random rand = new Random();
+        if (rand.Next(2) == 0)
+        {
+            playerInTurn = player1;
+        }
+        else
+        {
+            playerInTurn = player2;
+        }
+        
     }
 
     void Update()
@@ -79,21 +94,21 @@ public class GameManager : MonoBehaviour
 
     public void PlayerDeplacement(int i)
     {
-        if (playerInTurn.moveCounter < playerInTurn.maxMove)
+        if (playerInTurn.moveCounter < playerInTurn.maxDeplacement)
         {
             switch (i)
             {
                 case 0:
-                    playerInTurn.MoveCharacter(Direction.UP);
+                    playerInTurn.MoveItem(Direction.UP);
                     break;
                 case 1:
-                    playerInTurn.MoveCharacter(Direction.RIGHT);
+                    playerInTurn.MoveItem(Direction.RIGHT);
                     break;
                 case 2:
-                    playerInTurn.MoveCharacter(Direction.DOWN);
+                    playerInTurn.MoveItem(Direction.DOWN);
                     break;
                 case 3:
-                    playerInTurn.MoveCharacter(Direction.LEFT);
+                    playerInTurn.MoveItem(Direction.LEFT);
                     break;
             }
 
@@ -129,7 +144,7 @@ public class GameManager : MonoBehaviour
         uiManager.DisableSpellButtons();
         uiManager.DisableMoveArrows();
 
-        nextPlayer();
+        NextPlayer();
 
         BeginTurn();
     }
@@ -140,25 +155,23 @@ public class GameManager : MonoBehaviour
 
         foreach (BoardElement item in listItem)
         {
-            for (int i = 0; i < item.deplacement; i++)
+            if (item.JobDone())
             {
-                if (item.JobDone())
-                {
-                    itemToRemove.Add(item);
-                    Destroy(item.gameObject);
-                }
-                else
-                {
-                    item.MoveCharacter(item.orientation);
-                }
+                itemToRemove.Add(item);
+                Destroy(item.gameObject);
             }
+            else
+            {
+                item.MoveItem(item.orientation);
+            }
+            
         }
         foreach (BoardElement item in itemToRemove)
             listItem.Remove(item);
     }
 
 
-    private void nextPlayer()
+    private void NextPlayer()
     {
         if (playerInTurn == player1)
             playerInTurn = player2;
@@ -310,10 +323,10 @@ public class GameManager : MonoBehaviour
         switch(spellID)
         {
             case 0 : 
-                spellSelected = Spell.ARROW;
+                spellSelected = ItemName.ARROW;
                 break;
             case 1:
-                spellSelected = Spell.FIREBALL;
+                spellSelected = ItemName.FIREBALL;
                 break;
 
             default :
@@ -321,7 +334,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
         uiManager.DisableSpellButtons();
-        if(spellSelected == Spell.FIREBALL)
+        if(spellSelected == ItemName.FIREBALL)
             uiManager.EnableAttackDiagonalArrows(playerInTurn);
         else
             uiManager.EnableAttackArrows(playerInTurn);
@@ -332,10 +345,10 @@ public class GameManager : MonoBehaviour
     {
         switch(spellSelected)
         {
-            case Spell.ARROW :
+            case ItemName.ARROW :
                 SpawnArrows((Direction) OrientationID);
                 break;
-            case Spell.FIREBALL:
+            case ItemName.FIREBALL:
                 SpawnFlame((Direction)OrientationID);
                 break;
             default:
