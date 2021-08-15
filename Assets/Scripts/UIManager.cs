@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,28 +11,37 @@ public enum UIType
 
 public class UIManager : MonoBehaviour
 {
-    public CanvasController moveDirections;
-    public CanvasController spellDirections;
-    public CanvasController spells;
-    public CanvasController turnButtons;
-    public CanvasController winPanel;
-    public Text winnerName;
-    public GameObject spellDirectionUP;
-    public GameObject spellDirectionRIGHT;
-    public GameObject spellDirectionDOWN;
-    public GameObject spellDirectionLEFT;
-    public HealthBar redLife;
-    public HealthBar greenLife;
-    public Text turnName;
-
-    void Start()
-    {
-    }
-
-    void Update()
-    {
-        
-    }
+    [SerializeField]
+    private CanvasController moveDirections;
+    [SerializeField]
+    private CanvasController spellDirections;
+    [SerializeField]
+    private CanvasController spells;
+    [SerializeField]
+    private CanvasController endTurnButton;
+    [SerializeField]
+    private CanvasController endMoveButton;
+    [SerializeField]
+    private CanvasController winPanel;
+    [SerializeField]
+    private CancelButton cancelButton;
+    
+    [SerializeField]
+    private Text winnerName;
+    [SerializeField]
+    private GameObject spellDirectionUP;
+    [SerializeField]
+    private GameObject spellDirectionRIGHT;
+    [SerializeField]
+    private GameObject spellDirectionDOWN;
+    [SerializeField]
+    private GameObject spellDirectionLEFT;
+    [SerializeField]
+    private HealthBar redLife;
+    [SerializeField]
+    private HealthBar greenLife;
+    [SerializeField]
+    private Text turnName;
 
     public void DisableAllControllers()
     {
@@ -107,6 +117,39 @@ public class UIManager : MonoBehaviour
             greenLife.setFilledHearts(player.health);
     }
 
+    public void EnableEndMoveButton()
+    {
+        endMoveButton.gameObject.SetActive(true);
+    }
+    public void DisableEndMoveButton()
+    {
+        endMoveButton.gameObject.SetActive(false);
+    }
+    public void EnableEndTurnButton()
+    {
+        endTurnButton.gameObject.SetActive(true);
+    }
+    public void DisableEndTurnButton()
+    {
+        endTurnButton.gameObject.SetActive(false);
+    }
+    public void TurnONCancelButton()
+    {
+        cancelButton.EnableInteraction();
+    }
+    public void TurnOFFCancelButton()
+    {
+        cancelButton.DisableInteraction();
+    }
+
+    public void EnableCancelButton()
+    {
+        cancelButton.gameObject.SetActive(true);
+    }
+    public void DisableCancelButton()
+    {
+        cancelButton.gameObject.SetActive(false);
+    }
     /*
      * Désactive les directions de tir impossibles quand le joueur est contre un mur
      */
@@ -169,5 +212,16 @@ public class UIManager : MonoBehaviour
         else if (player.tagg == 2)
             winnerName.text = "Green Wins !";
         winPanel.gameObject.SetActive(true);
+    }
+
+    public void EndMovePhase()
+    {
+        DisableMoveArrows();
+        DisableEndMoveButton();
+        DisableAttackArrows();
+        EnableSpellButtons();
+        EnableEndTurnButton();
+        EnableCancelButton();
+        TurnOFFCancelButton();
     }
 }

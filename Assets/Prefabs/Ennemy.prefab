@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 2609971659402240061}
   - component: {fileID: 2609971659402240062}
   - component: {fileID: 4812096618631660174}
-  - component: {fileID: 2480634762688339211}
   m_Layer: 8
   m_Name: Ennemy
   m_TagString: Untagged
@@ -75,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 495418745
   m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_Sprite: {fileID: 2685024682024110994, guid: ccd26557fbbc4754fb6e16457477e2f5,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -122,7 +121,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.000706017, y: -0.31247258}
+  m_Offset: {x: 0, y: -0.3}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -133,7 +132,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.87253153, y: 0.8753934}
+  m_Size: {x: 0.45, y: 0.45}
   m_EdgeRadius: 0
 --- !u!114 &2609971659402240062
 MonoBehaviour:
@@ -150,14 +149,19 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   boardPosition: {x: 0, y: 0, z: 0}
   objectivePosition: {x: 0, y: 0, z: 0}
+  objectivesPositionsList: []
+  reached: 0
   board: {fileID: 0}
+  nameSpell: 0
   orientation: 0
   orientationAxes: {x: 0, y: 0}
   gameManager: {fileID: 0}
   speed: 3
   health: 0
   moveCounter: 0
-  maxMove: 2
+  maxDeplacement: 2
+  playerName: Green
+  tagg: 0
 --- !u!95 &4812096618631660174
 Animator:
   serializedVersion: 3
@@ -177,26 +181,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &2480634762688339211
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2609971659402240032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff17d016b643e9d4f950bfad80cfc717, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  position: {x: 0, y: 0, z: 0}
-  boardPosition: {x: 0, y: 0, z: 0}
-  objectivePosition: {x: 0, y: 0, z: 0}
-  board: {fileID: 0}
-  orientation: 0
-  orientationAxes: {x: 0, y: 0}
-  gameManager: {fileID: 0}
-  speed: 3
-  health: 0
-  moveCounter: 0
-  maxMove: 2

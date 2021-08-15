@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public static Cell[,] cellsBoard;
     public GameObject playerObject1;
     public GameObject playerObject2;
+    public ShaderManager shaderManager;
 
     public Arrow arrow;
     public Flame flame;
@@ -20,10 +21,9 @@ public class GameManager : MonoBehaviour
 
     public ItemName spellSelected;
     /*Spell ideas :
-     * 3 boules de feu en diagonale
      * 3 bloc de terre sur une ligne autour du personnage
      * bourrasque pour déplacer l'adversaire
-     * balle qui peut rebondir sur 3 murs à grande vitesse (4 cases par tour)
+     * Miroir pour renvoyer une attaque dans l'autre sens
      */
 
     public UIManager uiManager;
@@ -44,6 +44,8 @@ public class GameManager : MonoBehaviour
 
         uiManager.DisableAllControllers();
         uiManager.DisableWInPanel();
+        uiManager.DisableCancelButton();
+        uiManager.DisableEndTurnButton();
 
         BeginTurn();
     }
@@ -63,6 +65,9 @@ public class GameManager : MonoBehaviour
         uiManager.SetLifeBars(player2);
     }
 
+    /*
+     * Choix Aléatoire du premier joueur 
+     */
     private void FirstPlayerGenerator()
     {
         Random rand = new Random();
@@ -77,6 +82,9 @@ public class GameManager : MonoBehaviour
         
     }
 
+    /*
+     * Test continu de la condition de victoire : barre de vie de chaque joueur
+     */
     void Update()
     {
         if (player1.health == 0)
@@ -92,6 +100,9 @@ public class GameManager : MonoBehaviour
             
     }
 
+    /*
+     * Déplacement du joueur, méthode appelée par les 4 flèches buttons UI
+     */
     public void PlayerDeplacement(int i)
     {
         if (playerInTurn.moveCounter < playerInTurn.maxDeplacement)
@@ -116,8 +127,7 @@ public class GameManager : MonoBehaviour
 
             if (playerInTurn.moveCounter == 2)
             {
-                uiManager.DisableMoveArrows();
-                uiManager.EnableSpellButtons();
+                EndMoves();
             }
                 
         }
@@ -128,14 +138,21 @@ public class GameManager : MonoBehaviour
             
     }
 
+    /*
+     * Début d'un tour, RAZ du comteur de pas et affichage des UI
+     */
     public void BeginTurn()
     {
-        Debug.Log("Début du tour");
+        playerInTurn.moveCounter = 0;
         uiManager.SetNameTurn(playerInTurn);
         uiManager.EnableMoveArrows();
-        playerInTurn.moveCounter = 0;
+        uiManager.EnableEndMoveButton();
     }
 
+    /*
+     * Fin de tour, déplacement des différents items sur le plateau, activation/désaction des UI nécessaire
+     * changement de joueur et début du tour suivvant
+     */
     public void EndTour()
     {
         MoveItems();
@@ -143,12 +160,25 @@ public class GameManager : MonoBehaviour
         uiManager.DisableAttackArrows();
         uiManager.DisableSpellButtons();
         uiManager.DisableMoveArrows();
+        uiManager.DisableEndTurnButton();
+        uiManager.DisableCancelButton();
 
         NextPlayer();
 
         BeginTurn();
     }
+    
+    /*
+     * Désactive et active les UIs nécessaire lors de la fin de la phase de déplacement
+     */
+    public void EndMoves()
+    {
+        uiManager.EndMovePhase();
+    }
 
+    /*
+     * Permet de dépalcer tous les items présent selon leur movesets et tester si leur but est atteint et doivent être détruits
+     */
     private void MoveItems()
     {
         List<BoardElement> itemToRemove = new List<BoardElement>();
@@ -170,7 +200,9 @@ public class GameManager : MonoBehaviour
             listItem.Remove(item);
     }
 
-
+    /*
+     * Lorsque le tour est terminé, playerINTurn est actualisé avec le joueur suivant
+     */
     private void NextPlayer()
     {
         if (playerInTurn == player1)
@@ -183,12 +215,12 @@ public class GameManager : MonoBehaviour
     public void SpawnArrows(Direction dir)
     {
         float x1 = playerInTurn.boardPosition.x;
-        float x2 = playerInTurn.boardPosition.x;
-        float x3 = playerInTurn.boardPosition.x;
+        float x2 = x1;
+        float x3 = x1;
 
         float y1 = playerInTurn.boardPosition.y;
-        float y2 = playerInTurn.boardPosition.y;
-        float y3 = playerInTurn.boardPosition.y;
+        float y2 = y1;
+        float y3 = y1;
         float rotation = 0;
 
         switch (dir)
@@ -338,6 +370,8 @@ public class GameManager : MonoBehaviour
             uiManager.EnableAttackDiagonalArrows(playerInTurn);
         else
             uiManager.EnableAttackArrows(playerInTurn);
+        uiManager.EnableCancelButton();
+        uiManager.TurnONCancelButton();
     }
 
     //Choisi l'orientation du sort et le lancer
@@ -356,13 +390,19 @@ public class GameManager : MonoBehaviour
                 break;
         }
         uiManager.DisableAttackArrows();
+        uiManager.DisableCancelButton();
     }
 
+    /*
+     * Permet d'appliquer les différentes conséquences lorsqu'un joueur prends des dégâts
+     * destruction de l'objet, update de la health bar, animation shader
+     */
     public void AppliesDamage(BoardElement item, PlayerController player)
     {
         listItem.Remove(item);
         Destroy(item.gameObject);
         player.TakeDamages();
         uiManager.SetLifeBars(player);
+        shaderManager.StartWaves();
     }
 }

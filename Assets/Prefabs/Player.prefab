@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1561398011665323465}
   - component: {fileID: 1561398011665323466}
   - component: {fileID: 1561398011665323467}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 495418745
   m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_Sprite: {fileID: 3427114271967980436, guid: ed2763beb45523b4ca72b7bdcf50c4e9,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -121,7 +121,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.000706017, y: -0.50137043}
+  m_Offset: {x: 0, y: -0.3}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -132,7 +132,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.87253153, y: 0.8709488}
+  m_Size: {x: 0.45, y: 0.45}
   m_EdgeRadius: 0
 --- !u!114 &1561398011665323466
 MonoBehaviour:
@@ -149,13 +149,19 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   boardPosition: {x: 0, y: 0, z: 0}
   objectivePosition: {x: 0, y: 0, z: 0}
+  objectivesPositionsList: []
+  reached: 0
   board: {fileID: 0}
+  nameSpell: 0
   orientation: 0
   orientationAxes: {x: 0, y: 0}
+  gameManager: {fileID: 0}
   speed: 3
   health: 0
   moveCounter: 0
-  maxMove: 2
+  maxDeplacement: 2
+  playerName: Red
+  tagg: 0
 --- !u!95 &1561398011665323467
 Animator:
   serializedVersion: 3
